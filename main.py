@@ -20,6 +20,8 @@ import numpy as np
 import random
 import utils.config as cu
 import argparse
+
+# runner 라이브러리를 통해서 정리
 from runner.runner import Runner
 from runner.multienv_runner import MultiEnvRunner
 from runner.multienv_async_runner import MultiEnvAsyncRunner
