@@ -66,4 +66,17 @@ Windows에서는 cp39(Python 3.9) 휠로 설치하라는 주석이 있음 — `R
 
 여기에 실제로 돌려본 결과를 이어서 기록한다. (steps/sec, 소요 시간 등)
 
-- 2026-09-15: `ppo CartPole-v1` (n_envs=1, `Runner`) 벤치마크 진행 중 — 결과는 아래 대화/커밋 참고.
+### 2026-09-15: `ppo CartPole-v1` (n_envs=1, `Runner`)
+
+- 실행: `config/agents/ppo/CartPole-v1.yaml` 기본값 (`max_environment_steps: 100000`, `n_steps: 128`)
+- 실행 커맨드: `"C:/Users/User/WorkSpace/Donghun/miniconda3/envs/RL_Book/python.exe" main.py -a ppo -e CartPole-v1`
+- 결과 디렉터리: `results/models/ppo_CartPole-v1_2026-09-15_14-17-20/`
+- Start: 2026-09-15 14:17:23 / End: 2026-09-15 14:20:50
+- **총 소요 시간: 0:03:27 (207초) → 약 483 steps/sec**
+- 학습은 정상적으로 수렴 (100 에피소드 근방부터 `returns_mean` 500 도달, 이후 대부분 유지)
+- GPU 사용률은 실험 전 기준 idle(0%)이었고, CartPole은 env.step 자체가 가벼워 GPU가 병목이 아닐 것으로 예상됨 (다음에 `nvidia-smi dmon`으로 학습 중 실측 예정)
+
+### 다음에 비교할 것
+
+- `n_envs=4, sync` (`CartPole-v1-4-sync.yaml`) vs `n_envs=4, async` (`CartPole-v1-4-async.yaml`) vs 위 단일 env 483 steps/sec 기준선
+- `AntBulletEnv-v0` 계열 (env step이 무거운 케이스)에서 sync/async 차이가 더 크게 나는지 확인
