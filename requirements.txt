@@ -5,3 +5,4 @@ pybullet==3.2.6
 pyglet==1.5.27
 tensorboard==2.6.0
 ray[default]==1.13
+matplotlib==3.9.4

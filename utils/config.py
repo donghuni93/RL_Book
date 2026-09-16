@@ -39,7 +39,7 @@ def read_yaml(dirpath, filename):
     if not os.path.isfile(filepath): return None
 
     # 3. 설정 파일 읽기
-    with open(filepath, 'r') as f:
+    with open(filepath, 'r', encoding='utf-8') as f:
         try:
             config_dict = yaml.load(f, Loader=yaml.FullLoader)
         except yaml.YAMLError as exc:

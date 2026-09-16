@@ -10,6 +10,7 @@ Box2D==2.3.10
 
 # 시각화/로그
 tensorboard==2.6.0
+matplotlib==3.9.4
 
 # Ray: Windows용 cp39 Wheel로 설치
 ray[default]==1.13

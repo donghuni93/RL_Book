@@ -61,12 +61,8 @@ class Runner:
            if self.config.use_cuda else "cpu"
         )
 
-        # 3. 실행 토큰 생성
-        unique_token = "{}_{}_{}".format(
-            self.config.agent,
-            self.config.env_name,
-            datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        )
+        # 3. 실행 토큰 생성 (날짜 없이 특징 기반 이름 + 중복 시 순번 접미)
+        unique_token = self._make_unique_token()
         self.config.unique_token = unique_token
 
         # 4. 로거 생성
@@ -130,6 +126,38 @@ class Runner:
             self.console_logger.warning(warning_msg)
 
         return config
+
+    def _make_unique_token(self):
+        """
+            에이전트, 환경, 디바이스, 환경 개수로 실행 토큰의 기본 이름을 만들고
+            이미 사용 중인 이름이면 뒤에 순번(_2, _3, ...)을 붙여서 유일한 이름을 반환.
+        Returns:
+            중복되지 않는 실행 토큰 문자열
+        """
+
+        # 1. 특징 기반 기본 이름 생성 (날짜 없이)
+        device_tag = "gpu" if self.config.use_cuda else "cpu"
+        base_token = "{}_{}_{}_n{}".format(
+            self.config.agent,
+            self.config.env_name,
+            device_tag,
+            self.config.n_envs,
+        )
+
+        # 2. models/tb_logs 디렉토리 어디에도 없는 이름을 찾을 때까지 순번을 붙임
+        models_dir = os.path.join(
+            os.getcwd(), self.config.local_results_path, "models")
+        tb_logs_dir = os.path.join(
+            os.getcwd(), self.config.local_results_path, "tb_logs")
+
+        token = base_token
+        suffix = 1
+        while os.path.isdir(os.path.join(models_dir, token)) \
+                or os.path.isdir(os.path.join(tb_logs_dir, token)):
+            suffix += 1
+            token = "{}_{}".format(base_token, suffix)
+
+        return token
 
     def run(self):
         """
