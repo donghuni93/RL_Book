@@ -1,6 +1,6 @@
 ################### Common Part
 # GPU
-use_cuda: True # Use gpu by default unless it isn't available
+use_cuda: False # Benchmarked 2026-09-15/16: batch=1 per-step forward makes CPU faster on this repo's small networks (see 랩미팅 준비 폴더/9월18일 미팅 준비 폴더/CartPole_벤치마크_노트.md)
 device_num: 0 # CUDA device number
 
 # Etc
